@@ -19,7 +19,7 @@ double number;
 int ArraySize=CheckFile();
 if(!ArraySize){
     cout<<"File ERROR";
-    return 10;
+    return 0;
 }
 //Жирное меню
 int pos;
@@ -40,13 +40,13 @@ FillArray(arr,ArraySize);
             }
             case 2:{
             number = CRNumber();
-            t2(arr,ArraySize,1,22);
+            t2(arr,ArraySize,1,number);
             break;
             }
             case 3:{
             cout<<"Choose position: ";cin>>pos;
             number = CRNumber();
-            t2(arr,ArraySize,pos,22);
+            t2(arr,ArraySize,pos,number);
             break;
             }
             case 4:{
@@ -135,7 +135,7 @@ void t4(double*& arr,int &arraysize, int place){
 }
 
 double CRNumber(){
-    int num;
+    double num;
     int pick;
     cout<<"1.Random number"<<endl<<"2.Write number"<<endl;
     cin>>pick;
