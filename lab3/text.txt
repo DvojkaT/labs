@@ -1,0 +1,3 @@
+12 yellow
+6 black
+22 white
