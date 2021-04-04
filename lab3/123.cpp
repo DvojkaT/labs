@@ -2,37 +2,38 @@
 #include <fstream>
 using namespace std;
 
-struct crocodile{
-    int age;
+struct Laptop{
+    int Price;
     string color;
     void out();
-    bool IsEqual(crocodile);
+    bool IsEqual(Laptop);
 };
 
 struct MyStack
 {
   struct Node
   {
-    crocodile data;
+    Laptop data;
     Node *prev;
   };
   Node *Top = NULL;
   int Count;
-  bool Push(crocodile);
-  bool Pop(crocodile&);
+  bool Push(Laptop);
+  bool Pop(Laptop&);
   void Info();
+  void deletion(Laptop&);
 };
 
-void crocodile::out(){
-    cout<<"age: "<<age<<" color: "<<color<<endl;
+void Laptop::out(){
+    cout<<"Price: "<<Price<<" color: "<<color<<endl;
 }
 
-bool crocodile::IsEqual(crocodile a){
-    if(a.age==age&&a.color==color) return true;
+bool Laptop::IsEqual(Laptop a){
+    if(a.Price==Price&&a.color==color) return true;
     return false;
 }
 
-bool MyStack::Push(crocodile data)
+bool MyStack::Push(Laptop data)
 {
   if(!Top)
   {
@@ -51,7 +52,7 @@ bool MyStack::Push(crocodile data)
   Top -> data = data;
   return true;
 }
-bool MyStack::Pop(crocodile &data)
+bool MyStack::Pop(Laptop &data)
 {
   if(!Top) return false;
   Node *temp = Top -> prev;
@@ -66,54 +67,86 @@ void MyStack::Info()
   if(!Top) cout << "Stack is empty" << endl;
   else
   {
-    cout << endl << "Stack info: " << endl;
+    cout << endl << "\tStack info: " << endl;
     cout << "\tStack size = " << Count << endl;
-    //cout <<"\tTop data = " << Top -> data << endl << endl;
     Top->data.out();
   }
 }
 
+void MyStack::deletion(Laptop& k){
+  while (Count !=0) Pop(k);
+}
 
-void read(MyStack&,char*);
-void FindCr(MyStack&);
+void read(MyStack&,string);
+void FindCr(MyStack&,Laptop);
 
 int main()
 {
-  int n = 10; crocodile k;
-  crocodile a={10,"brown"},b={5,"green"};
+  Laptop k;
+  Laptop find;
+  Laptop a={10,"brown"},b={5,"green"};
   MyStack S;
-  S.Info();
-    read(S,"text.txt");
-  S.Info();
-  FindCr(S);
-  S.Info();
-  while(S.Pop(k))
-    k.out();
-  cout << endl;
-  S.Info();
+  char* color;
+  int price;
+  read(S,"text.txt");
+  int choice;
+
+        cout<<"-------Menu-------"<<endl;
+        cout<<"1. Show top laptop"<<endl;
+        cout<<"2. Add new laptop"<<endl;
+        cout<<"3. Find laptop"<<endl;
+        cout<<"4. Delete all"<<endl;
+        cout<<"0. Exit"<<endl;
+        do{
+        cout<<"Choose option: "; 
+        cin>>choice;
+        switch(choice){
+            case 1:{
+                S.Info();
+                break;
+            }
+            case 2:{
+                cout<<"Write price: ";cin>>k.Price;
+                cout<<"Write color: ";cin>>k.color;
+                S.Push(k);
+                break;
+            case 3:{
+              cout<<"Find:"<<endl;
+              cout<<"Which price: ";cin>>find.Price;
+              cout<<"Which color: ";cin>>find.color;
+              FindCr(S,find);
+              break;
+            }
+            case 4:{
+                S.deletion(k);
+                break;
+            }
+            }
+        }
+    }while(choice!=0);
 }
 
-void read(MyStack& S,char* FileName){
+void read(MyStack& S,string FileName){
 ifstream F(FileName);
 if (!F){ cout<<"Error";
 return;
 }
-crocodile cr;
-while(F>>cr.age>>cr.color) S.Push(cr);
+Laptop cr;
+while(F>>cr.Price>>cr.color) S.Push(cr);
 F.close();
 }
 
-void FindCr(MyStack& S){
-    crocodile find={10,"black"}, cr;
+void FindCr(MyStack& S,Laptop find){
+    Laptop cr;
     MyStack second;
     while(S.Count != 0&&!(S.Top->data.IsEqual(find))){
         S.Pop(cr);
         second.Push(cr);
     }
     if(S.Count!=0){
-        cout<<"Crocodile is found"<<endl;
+        cout<<"Laptop is found"<<endl;
         S.Pop(cr);
     }
-    else cout<<"Crocodile is not found"<<endl;
+    else cout<<"Laptop is not found"<<endl;
     while(second.Pop(cr)) S.Push(cr);
 }

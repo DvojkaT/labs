@@ -2,8 +2,8 @@
 using namespace std;
 
 struct Laptop{
-    string model,color;
-    int ReleaseDate,Price;
+    string color;
+    int Price;
 };
 struct Stack{
 struct Node{
@@ -16,10 +16,11 @@ struct Node{
     bool CreateList(Laptop lap);
     bool AddNext(Laptop lap);
     bool Print();
-    void NewLaptop(Stack st,Laptop lap, char *model, char *color, int ReleaseDate, int Price);
+    void NewLaptop(Stack st,Laptop lap, char *color, int Price);
     bool Del(Laptop& lap);
 };
 
+void read(Stack&,char*);
 
 int main(){
     Stack first;
@@ -40,10 +41,8 @@ int choice;
                 break;
             }
             case 2:{
-                cout<<"Write model: ";cin>>lap.model;
                 cout<<"Write price: ";cin>>lap.Price;
                 cout<<"Write color: ";cin>>lap.color;
-                cout<<"Write release date: ";cin>>lap.ReleaseDate;
                 first.AddNext(lap);
                 break;
             case 3:{
@@ -79,10 +78,8 @@ bool Stack::Print(){
     if(F==NULL) cout<<endl<<"---List is empty---"<<endl;
     else {cout<<endl<<"Top model:\t"<<endl;
         cout<<"---------------------------------"<<endl;
-        cout<<"Model: "<<F->data.model<<endl;
         cout<<"Price: "<<F->data.Price<<endl;
         cout<<"Color: "<<F->data.color<<endl;
-        cout<<"Release date: "<<F->data.ReleaseDate<<endl;
         cout<<"---------------------------------"<<endl;
     cout<<endl<<"Count = "<<Count<<endl;
     }
@@ -91,20 +88,17 @@ bool Stack::Print(){
 
 
 
-bool Stack::Del(Laptop& lap){ //Доработай скотина, он неправильно удаляет
-    if(C==NULL) return false;
-    Node *temp;
-    temp = F;
-    lap=C->data;
-    do{
-        if(temp->next==C){
-            temp->next=C->next;
-            delete C;
-            C=temp;
-            Count--;
-            return true;
-        }
-        temp=temp->next;
-    } while(F!=NULL);
-    return false;
+bool Stack::Del(Laptop& data){ 
+  if(!F) return false;
+  Node *temp = F -> next;
+  data = F -> data;
+  delete F;
+  F = temp;
+  Count--;
+  return true;
+}
+
+void read(Stack&,char*){
+
+
 }
