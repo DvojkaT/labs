@@ -1,3 +1,3 @@
-120 yellow
-600 black
-220 white
+120 Lenovo Yellow 2020
+600 Apple Black 2021
+220 MSI White 2302

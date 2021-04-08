@@ -3,8 +3,8 @@
 using namespace std;
 
 struct Laptop{
-    int Price;
-    string color;
+    int Price,ReleaseDate;
+    string color,model;
     void out();
     bool IsEqual(Laptop);
 };
@@ -25,11 +25,12 @@ struct MyStack
 };
 
 void Laptop::out(){
-    cout<<"Price: "<<Price<<" color: "<<color<<endl;
+    cout<<" Price: "<<Price<<endl<<" Model: "<<model<<endl<<" Color: "<<
+    color<<endl<<" Release date: "<<ReleaseDate<<endl;
 }
 
 bool Laptop::IsEqual(Laptop a){
-    if(a.Price==Price&&a.color==color) return true;
+    if(a.Price==Price&&a.color==color&&a.ReleaseDate==ReleaseDate&&model==model) return true;
     return false;
 }
 
@@ -84,7 +85,6 @@ int main()
 {
   Laptop k;
   Laptop find;
-  Laptop a={10,"brown"},b={5,"green"};
   MyStack S;
   char* color;
   int price;
@@ -108,12 +108,16 @@ int main()
             case 2:{
                 cout<<"Write price: ";cin>>k.Price;
                 cout<<"Write color: ";cin>>k.color;
+                cout<<"Write Release date: ";cin>>k.ReleaseDate;
+                cout<<"Write model: ";cin>>k.model;
                 S.Push(k);
                 break;
             case 3:{
               cout<<"Find:"<<endl;
               cout<<"Which price: ";cin>>find.Price;
               cout<<"Which color: ";cin>>find.color;
+              cout<<"Which model: ";cin>>find.model;
+              cout<<"Which release date: ";cin>>find.ReleaseDate;
               FindCr(S,find);
               break;
             }
@@ -132,7 +136,7 @@ if (!F){ cout<<"Error";
 return;
 }
 Laptop cr;
-while(F>>cr.Price>>cr.color) S.Push(cr);
+while(F>>cr.Price>>cr.model>>cr.color>>cr.ReleaseDate) S.Push(cr);
 F.close();
 }
 
