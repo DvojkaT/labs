@@ -22,6 +22,7 @@ struct MyQueue
     Node* First = NULL;
     int Count = 0;
     int payment = 0;
+    int MinPrice = 0;
     int full = 0;
     bool Push(consignment);
     bool Pop(consignment&);
@@ -35,6 +36,7 @@ bool MyQueue::Push(consignment data)
         First->next = NULL;
         First->data = data;
         Count = 1;
+        MinPrice=First->data.Price;
     }
     else
     {
@@ -45,6 +47,7 @@ bool MyQueue::Push(consignment data)
         temp->next->data = data;
         temp->next->next = NULL;
         Count++;
+        if (MinPrice<First->data.Price) MinPrice=First->data.Price;
     }
     return true;
 }
@@ -105,11 +108,19 @@ void menu(MyQueue q) {
         cout<<"Enter price: ";cin>>pr;
         cout<<"Enter amount: ";cin>>am;
         while(am!=0){
+            if(q.MinPrice>pr){
+                cout<<"WARNING--Too cheap--WARNING"<<endl;
+                break;
+            }
             if(am<q.First->data.Amount&&q.First->data.Price<=pr){
                 q.First->data.Amount-=am;
                 q.payment += am * (pr - q.First->data.Price);
                 q.full -= am;
                 am=0;
+            }
+            if(q.full<am){
+                cout<<"WARNING--AMOUNT IS TOO BIG--WARNING"<<endl;
+                break;
             }
             else{
                 am-=q.First->data.Amount;
@@ -119,6 +130,7 @@ void menu(MyQueue q) {
             }
             if (q.First->data.Amount==0){
                 q.Pop(a);
+                q.MinPrice=q.First->data.Price;
             }
         }
             break;
