@@ -22,11 +22,12 @@ struct MyQueue
     Node* First = NULL;
     int Count = 0;
     int payment = 0;
-    int MinPrice = 0;
+    int AllPrice = 0;
     int full = 0;
     bool Push(consignment);
     bool Pop(consignment&);
     void Info();
+    void deletion(consignment&);
 };
 bool MyQueue::Push(consignment data)
 {
@@ -36,7 +37,7 @@ bool MyQueue::Push(consignment data)
         First->next = NULL;
         First->data = data;
         Count = 1;
-        MinPrice=First->data.Price;
+        AllPrice += data.Price * data.Amount;
     }
     else
     {
@@ -47,7 +48,7 @@ bool MyQueue::Push(consignment data)
         temp->next->data = data;
         temp->next->next = NULL;
         Count++;
-        if (MinPrice<First->data.Price) MinPrice=First->data.Price;
+        AllPrice += data.Price * data.Amount;
     }
     return true;
 }
@@ -71,23 +72,50 @@ void MyQueue::Info()
         First->data.out();
     }
 }
+void MyQueue::deletion(consignment& k){
+    while (Count !=0) Pop(k);
+}
  
 void menu(MyQueue q);
+bool check(MyQueue q, consignment second){
+    consignment first;
+    MyQueue::Node *a;
+    a=q.First;
+    int k=0;
+    while(a->data.Price<=second.Price && k!=q.Count)
+    {
+        first.Price = a->data.Price;
+        first.Amount = a->data.Amount;
+        if(second.Amount<=first.Amount)
+        {
+            second.Amount = 0;
+        }
+        else{
+            second.Amount -= first.Amount;
+        }
+        if(second.Amount==0) return true;
+        else{
+            if(k<q.Count){
+                k++;
+                a=a->next;
+            }
+            else return false;
+        }
+    }
+    return false;
+}
  
 int main()
 {
-    int n = 10;
-    double db=0;
+    consignment a;
     MyQueue Q;
     menu(Q);
-    return 0;
- 
+    Q.deletion(a);
 }
  
 void menu(MyQueue q) {
-    consignment Ctop;
-    consignment a;
-    double pr;
+    consignment first;
+    consignment second;
     int k,am;
     do {
         cout << "1.Add new product" << endl;
@@ -97,42 +125,41 @@ void menu(MyQueue q) {
         cin >> k;
         switch (k) {
         case 1:
-            cout << "Enter Price: "; cin >> pr;
-            cout << "Enter amount: "; cin >> am;
-            a.Price = pr;
-            a.Amount = am;
-            q.Push(a);
-            q.full+=am;
+            cout << "Enter Price: "; cin >> second.Price;
+            cout << "Enter amount: "; cin >> second.Amount;
+            q.Push(second);
+            q.full+=second.Amount;
             break;
         case 2:
-        cout<<"Enter price: ";cin>>pr;
-        cout<<"Enter amount: ";cin>>am;
-        while(am!=0){
-            if(q.MinPrice>pr){
-                cout<<"WARNING--Too cheap--WARNING"<<endl;
-                break;
-            }
-            if(am<q.First->data.Amount&&q.First->data.Price<=pr){
-                q.First->data.Amount-=am;
-                q.payment += am * (pr - q.First->data.Price);
-                q.full -= am;
-                am=0;
-            }
-            if(q.full<am){
-                cout<<"WARNING--AMOUNT IS TOO BIG--WARNING"<<endl;
-                break;
+        cout<<"Enter price: ";cin>>second.Price;
+        cout<<"Enter amount: ";cin>>second.Amount;
+        first = q.First->data;
+        if(check(q, second)){
+        while(second.Amount){
+            if(second.Amount<=first.Amount){
+                q.payment += second.Amount * (second.Price - first.Price);
+                q.AllPrice -= first.Price * second.Price;
+                first.Amount -= second.Amount;
+                q.full -= second.Amount;
+                second.Amount = 0;
+                q.First->data.Amount= first.Amount;
             }
             else{
-                am-=q.First->data.Amount;
-                q.payment += q.First->data.Amount * (pr - q.First->data.Price);
-                q.full -= q.First->data.Amount;
-                q.First->data.Amount=0;
+                q.payment += first.Amount * (second.Price - first.Price);
+                q.AllPrice -= first.Price * first.Amount;
+                second.Amount -= first.Amount;
+                q.full -=(second.Amount -= first.Amount);
+                first.Amount = 0;
+                q.First->data.Amount=first.Amount;
             }
-            if (q.First->data.Amount==0){
-                q.Pop(a);
-                q.MinPrice=q.First->data.Price;
+            if (first.Amount==0){
+                q.Pop(first);
+                first = q.First ->data;
             }
         }
+            cout<<"Purchase complete"<<endl;
+        }
+        else cout<<"Purchase failed"<<endl;
             break;
         case 3:
             q.Info();
