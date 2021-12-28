@@ -9,8 +9,8 @@ FigureDraw::FigureDraw(QPoint position)
 
 void FigureDraw::updateInfo()
 {
-   QString InfoCoor = QString("\nКоординаты: %1, %2").arg(position.x()).arg((position.y()));
-   QString InfoFigure = QString("Площадь: %1\nПериметр: %2").arg(figure->findArea()).arg(figure->findPerimeter());
+   QString InfoFigure = QString("Площадь: %1\nПериметр: %2\nX: %3\nY: %4").arg(figure->findArea()).arg(figure->findPerimeter())
+                                .arg(position.x()).arg((position.y()));
    setToolTip(InfoFigure);
 }
 
