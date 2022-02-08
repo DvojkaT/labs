@@ -1,7 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="/">
-<file alias="images/circle.png">C:/labs/lab9(2)/images/circle.png</file>
-<file alias="images/delete.png">C:/labs/lab9(2)/images/delete.png</file>
-<file alias="images/triangle.png">C:/labs/lab9(2)/images/triangle.png</file>
-</qresource>
-</RCC>
